@@ -74,6 +74,25 @@ export const removeLike = (postId, likeId, TYPE) => (dispatch) => {
     }))
 }
 
+export const AddSave = (postId, saveId, TYPE) => (dispatch) => {
+  axios
+    .delete(`/api/posts/${postId}/save/${saveId}`)
+    .then((res) => dispatch({
+      type: TYPE,
+      payload: res.data
+    }))
+}
+
+export const RemoveSave = (postId, saveId, TYPE) => (dispatch) => {
+  axios
+    .delete(`/api/posts/${postId}/save/${saveId}`)
+    .then((res) => dispatch({
+      type: TYPE,
+      payload: res.data
+    }))
+}
+
+
 export const createComment = (postId, comment) => (dispatch) => {
   axios
     .post(`/api/posts/${postId}/comments`, comment)

@@ -93,7 +93,7 @@ class Register extends React.Component {
                   </div>
                 </div>
                 <div className="form-group">
-                  <button type="submit" className="btn btn-dark btn-block">Далее</button>
+                  <button type="submit" className="btn btn-dark btn-block">Зарегистрироваться</button>
                 </div>
               </form>
             </article>

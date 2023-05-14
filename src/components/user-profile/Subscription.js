@@ -16,7 +16,8 @@ class Subscription extends React.Component {
     const { subscription: { subscriptions }, auth, userId } = this.props
     if (!auth.isAuthenticated) {
       this.props.history.push('/login')
-    } else {
+    }
+    else {
       const existedSub = subscriptions.find((s) => s.subscriber === auth.user.id)
       if (existedSub) {
         this.props.remove(existedSub._id)
@@ -33,7 +34,7 @@ class Subscription extends React.Component {
         className="btn btn-dark btn-block subscribe-btn"
         onClick={this.onSubClick}
       >
-        Subscribe | <i className="fa fa-users"></i> {subscriptions.length}
+        Подписаться | <i className="fa fa-users"></i> {subscriptions.length}
       </button>
     )
   }

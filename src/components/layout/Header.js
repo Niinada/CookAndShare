@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import { logout } from '../../actions/auth'
 
+
 class Header extends React.Component {
 
   onLogout = (e) => {
@@ -19,8 +20,8 @@ class Header extends React.Component {
       links = (
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i className="fa fa-user"></i>
-            Account
+            <i className="fa fa-user-circle-o"></i>
+            Аккаунт
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
             <Link className="dropdown-item" to={'/user/' + user.id}>Профиль</Link>
@@ -45,16 +46,16 @@ class Header extends React.Component {
           <li className="nav-item">
             <Link className="nav-link" to="/register">
               <i className="fa fa-user-plus"></i>
-              Зарегистрироваться
+              Зарегестрироваться
             </Link>
           </li>
         </React.Fragment>
       )
     }
     return (
-      <nav className="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-icon-top navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">Cook and Share</Link>
+          <Link className="navbar-brand" to="/">Cook and share</Link>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -63,8 +64,12 @@ class Header extends React.Component {
               {isAuthenticated && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/feed">
-                    <i className="fa fa-rss"></i>
-                    Feed
+                    <i className="fa fa fa-user"></i>
+                    Подписки
+                  </Link>
+                  <Link className="nav-link" to="/createRecipe">
+                    <i className="fa fa fa-pencil"></i>
+                    Новый рецепт
                   </Link>
                 </li>
               )}

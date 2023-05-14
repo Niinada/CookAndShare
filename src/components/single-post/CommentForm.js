@@ -28,7 +28,7 @@ class CommentForm extends React.Component {
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
               <Quill
-                placeholder="What do you think?"
+                placeholder="Написать комментарий..."
                 theme="snow"
                 modules={{ toolbar: false }}
                 value={this.state.body}
@@ -36,7 +36,7 @@ class CommentForm extends React.Component {
               />
             </div>
             <div className="btn-group">
-              <button type="submit" className="btn btn-dark">Comment</button>
+              <button type="submit" className="btn btn-dark">Отправить</button>
             </div>
           </form>
         </div>

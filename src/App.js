@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import jwtDecode from 'jwt-decode'
 
-
 import store from './store'
 import setAuthToken from './utils/setAuthToken'
 
@@ -19,7 +18,7 @@ import SinglePost from './components/single-post/SinglePost'
 import UserProfile from './components/user-profile/UserProifle'
 import Feed from './components/feed/Feed'
 import NotFound from './components/not-found/NotFound'
-
+import CreateRecipe from './components/shared/PostForm'
 
 if (localStorage.access_token) {
   const { access_token } = localStorage
@@ -45,6 +44,7 @@ function App() {
             <Route exact path="/" component={AllPosts} />
             <Route path="/post/:id" component={SinglePost} />
             <Route path="/user/:id" component={UserProfile} />
+            <Route path="/createRecipe" component={CreateRecipe}/>
             <Switch>
               <PrivateRoute path="/feed" component={Feed} />
             </Switch>

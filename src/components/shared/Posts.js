@@ -45,7 +45,7 @@ class Posts extends React.Component {
         {isLoading && <Loader />}
         {!isLoading && totalCount === 0 && (
           <div className="text-center">
-            <h2>Тут пока пусто(</h2>
+            <h2>Тут пока ничего нет</h2>
           </div>
         )}
         {posts.map((p) => <Post post={p} key={p._id} TYPE={UPDATE_POSTS} />)}

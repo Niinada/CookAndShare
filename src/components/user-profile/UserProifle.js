@@ -6,7 +6,6 @@ import { getUserById } from '../../actions/user'
 import Loader from '../shared/Loader'
 import PostForm from '../shared/PostForm'
 import Posts from '../shared/Posts'
-import ProfileImage from '../shared/ProfileImage'
 import Subscription from './Subscription'
 
 class UserProfile extends React.Component {
@@ -31,12 +30,9 @@ class UserProfile extends React.Component {
               <div className="col-8">
                 <h2 className="profile-username">{user.name}</h2>
                 <p>
-                  <strong>Registered: </strong>
+                  <strong>Зарегистрирован: </strong>
                   {new Date(user.createdDate).toDateString()}
                 </p>
-              </div>
-              <div className="col-4 text-center">
-                <ProfileImage user={user} />
               </div>
             </div>
           </div>
@@ -52,7 +48,6 @@ class UserProfile extends React.Component {
         )}
         <div className="row mt-4">
           <div className="col-md-6 mx-auto">
-            {auth.user.id === user._id && <PostForm />}
             <Posts queryParams={{ user: user._id }} />
           </div>
         </div>

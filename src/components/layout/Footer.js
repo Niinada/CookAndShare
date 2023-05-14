@@ -5,4 +5,3 @@ export default () => (
     Copyright &copy; {new Date().getFullYear()} Cook and share
   </footer>
 )
-  
