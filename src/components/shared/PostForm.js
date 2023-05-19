@@ -10,13 +10,13 @@ class PostForm extends React.Component {
 
   constructor() {
     super()
-    this.state = { body: '' }
+    this.state = { name: '', description: '' }
   }
 
   onChangeBody = (body) => this.setState({ body })
 
   onSubmit = (e) => {
-    e.preventDefault()
+    console.log(this.state)
     this.props.create(this.state)
     this.setState({ body: '' })
   }

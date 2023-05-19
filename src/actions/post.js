@@ -11,8 +11,14 @@ import {
 } from './types'
 
 export const create = (post) => (dispatch) => {
-  axios
-    .post('/api/posts', post)
+  console.log(post)
+    fetch('https://localhost:44314/Recipe', {
+      body: post,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        }
+    })
     .then((res) => dispatch({
       type: ADD_POST,
       payload: res.data
@@ -20,7 +26,7 @@ export const create = (post) => (dispatch) => {
 }
 
 export const getAll = (params) => (dispatch) => {
-  dispatch(setPostLoading(true))
+  /*
   axios
     .get('/api/posts', { params })
     .then((res) => dispatch({
@@ -33,7 +39,7 @@ export const getAll = (params) => (dispatch) => {
     .catch(() => {
       dispatch(setPostLoading(false))
       dispatch(clearPosts())
-    })
+    })*/
 }
 
 export const getById = (id) => (dispatch) => {
