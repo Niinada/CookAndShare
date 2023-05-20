@@ -13,7 +13,7 @@ export const register = (userData, history) => () => {
         'Content-Type': 'application/json'
         }
     })
-    .then(() => history.push('/login'))                                                                                                                                                                                                           
+    .then(() => history.push('/login'))                                                                                                                                                                                                
 }
 
 export function checkLogin(dispatch) {
@@ -23,9 +23,8 @@ export function checkLogin(dispatch) {
     dispatch(logout());
     return;
   }
-  token = JSON.parse(tokenDetails); 
-
-  dispatch(setCurrentUser(token));
+  const decoded = jwtDecode(tokenDetails)
+  dispatch(setCurrentUser(decoded))
 }
 
 export function SaveToken(token) {
@@ -44,11 +43,14 @@ export const login = (userData) => (dispatch) => {
     headers: {
       'Content-Type': 'application/json'
       }})
-  .then(() => {
-    SaveToken(userData)
-    console.log()
-    dispatch(setCurrentUser(userData))
-  })
+      .then(response => response.json())
+      .then(token => {
+        SaveToken(token.token)
+        const decoded = jwtDecode(token.token)
+        console.log(decoded)
+        dispatch(setCurrentUser(decoded))
+      })
+      .catch(error => console.error('Unable to get item', error))
 }
 
 export const logout = () => (dispatch) => {

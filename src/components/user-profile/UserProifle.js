@@ -7,11 +7,14 @@ import Loader from '../shared/Loader'
 import PostForm from '../shared/PostForm'
 import Posts from '../shared/Posts'
 import Subscription from './Subscription'
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
+import jwtDecode from 'jwt-decode'
 
 class UserProfile extends React.Component {
 
   componentDidMount() {
-    this.props.getUserById(this.props.match.params.id)
+    const decode = jwtDecode(localStorage.getItem('userData'))
+    this.props.getUserById(decode.nameid)
   }
 
   componentWillReceiveProps(nextProps) {
