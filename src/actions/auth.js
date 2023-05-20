@@ -3,28 +3,58 @@ import jwtDecode from 'jwt-decode'
 
 import { SET_CURRENT_USER } from './types'
 import setAuthToken from '../utils/setAuthToken'
+import user from '../reducers/user'
 
 export const register = (userData, history) => () => {
-  axios
-    .post('/api/auth/register', userData)
-    .then(() => history.push('/login'))
+    fetch('https://localhost:44314/api/User/register', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+      headers: {
+        'Content-Type': 'application/json'
+        }
+    })
+    .then(() => history.push('/login'))                                                                                                                                                                                                
+}
+
+export function checkLogin(dispatch) {
+  const tokenDetails = localStorage.getItem('userData');
+  let token = '';
+  if (!tokenDetails) {
+    dispatch(logout());
+    return;
+  }
+  const decoded = jwtDecode(tokenDetails)
+  dispatch(setCurrentUser(decoded))
+}
+
+export function SaveToken(token) {
+  localStorage.setItem('userData', JSON.stringify(token));
+}
+
+function DeleteToken() {
+  localStorage.removeItem('userData')
 }
 
 export const login = (userData) => (dispatch) => {
-  axios
-    .post('/api/auth/login', userData)
-    .then((res) => {
-      const { token } = res.data
-      localStorage.setItem('access_token', token)
-      setAuthToken(token)
-      const decoded = jwtDecode(token)
-      dispatch(setCurrentUser(decoded))
-    })
+  console.log(userData)
+  fetch('https://localhost:44314/api/User/login', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+    headers: {
+      'Content-Type': 'application/json'
+      }})
+      .then(response => response.json())
+      .then(token => {
+        SaveToken(token.token)
+        const decoded = jwtDecode(token.token)
+        console.log(decoded)
+        dispatch(setCurrentUser(decoded))
+      })
+      .catch(error => console.error('Unable to get item', error))
 }
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem('access_token')
-  setAuthToken(false)
+  DeleteToken()
   dispatch(setCurrentUser({}))
 }
 

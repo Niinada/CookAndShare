@@ -10,15 +10,15 @@ class PostForm extends React.Component {
 
   constructor() {
     super()
-    this.state = { body: '' }
+    this.state = { name: '1', discription: '' }
   }
 
-  onChangeBody = (body) => this.setState({ body })
+  onChangeBody = (discription) => { this.setState({ discription })}
 
   onSubmit = (e) => {
     e.preventDefault()
     this.props.create(this.state)
-    this.setState({ body: '' })
+    this.setState({name: '1', discription: '' })
   }
   
   render() {
@@ -36,7 +36,7 @@ class PostForm extends React.Component {
                 ['clean']
               ]
             }}
-            value={this.state.body}
+            value={this.state.discription}
             onChange={this.onChangeBody}
           />
           </div>

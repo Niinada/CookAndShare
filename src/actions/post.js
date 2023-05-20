@@ -11,29 +11,24 @@ import {
 } from './types'
 
 export const create = (post) => (dispatch) => {
-  axios
-    .post('/api/posts', post)
-    .then((res) => dispatch({
-      type: ADD_POST,
-      payload: res.data
-    }))
+  console.log(post)
+  let tok = localStorage.getItem('userData').replaceAll('\"', '')
+  console.log(`Bearer ${tok}`)
+    fetch('https://localhost:44314/Recipe', {
+      mode: 'no-cors',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${tok}`
+        },
+      body: post
+    }).then((res) => {
+      console.log(res)
+    })
 }
 
 export const getAll = (params) => (dispatch) => {
-  dispatch(setPostLoading(true))
-  axios
-    .get('/api/posts', { params })
-    .then((res) => dispatch({
-      type: GET_POSTS,
-      payload: {
-        posts: res.data,
-        totalCount: +res.headers['x-total-count']
-      }
-    }))
-    .catch(() => {
-      dispatch(setPostLoading(false))
-      dispatch(clearPosts())
-    })
+
 }
 
 export const getById = (id) => (dispatch) => {

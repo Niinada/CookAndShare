@@ -11,7 +11,8 @@ class Register extends React.Component {
     this.state = {
       name: '',
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     }
   }
 
@@ -90,6 +91,28 @@ class Register extends React.Component {
                       onChange={this.onChange}
                       pattern=".{6,30}"
                     />
+                  </div>
+                  <div>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <div className="input-group">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">
+                        <i className="fa fa-lock"></i>
+                      </span>
+                    </div>
+                    <input
+                      className="form-control"
+                      placeholder="Confirm password"
+                      type="password"
+                      name="confirmPassword"
+                      value={this.state.confirmPassword}
+                      onChange={this.onChange}
+                      pattern=".{6,30}"
+                    />
+                  </div>
+                  <div>
                   </div>
                 </div>
                 <div className="form-group">

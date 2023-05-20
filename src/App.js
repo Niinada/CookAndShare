@@ -1,4 +1,7 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import jwtDecode from 'jwt-decode'
@@ -19,22 +22,21 @@ import UserProfile from './components/user-profile/UserProifle'
 import Feed from './components/feed/Feed'
 import NotFound from './components/not-found/NotFound'
 import CreateRecipe from './components/shared/PostForm'
+import {checkLogin} from './actions/auth'
 
-if (localStorage.access_token) {
-  const { access_token } = localStorage
-  setAuthToken(access_token)
-  const decoded = jwtDecode(access_token)
-  store.dispatch(setCurrentUser(decoded))
-  const currentTime = Date.now() / 1000
-  if (decoded.exp < currentTime) {
-    store.dispatch(logout())
-    window.location.href = '/login'
-  }
+function Func() {
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    checkLogin(dispatch);
+  })
+  return dispatch
 }
 
 function App() {
   return (
     <Provider store={store}>
+      <Func />
       <BrowserRouter>
         <React.Fragment>
           <Header />
