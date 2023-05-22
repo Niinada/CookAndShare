@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Pagination from "react-js-pagination"
-
+import axios from 'axios'
 import { UPDATE_POSTS } from '../../actions/types'
 import { getAll } from '../../actions/post'
 
@@ -16,6 +16,7 @@ class Posts extends React.Component {
   constructor() {
     super()
     this.state = { activePage: 1 }
+    this.before = []
   }
 
   componentDidMount() {
@@ -39,7 +40,56 @@ class Posts extends React.Component {
   }
 
   render() {
-    const { isLoading, posts, totalCount } = this.props.post
+    const { post } = this.props.post
+    if (post == null)
+    {
+      return (
+        <React.Fragment>
+          <div className="text-center">
+            <h2>Тут пока ничего нет</h2>
+          </div>
+        </React.Fragment>
+      )
+    }
+
+    let isLoading = post.isLoading
+    let posts = []
+    console.log('post', post)
+    if (post.posts != undefined)
+    {
+      posts = post.posts
+    }
+    else
+    {
+      
+      axios
+      .get('https://localhost:44314/Recipe')
+      .then((res) => { 
+        const count = res.data.$values.length
+        let from = count - 0
+        const to = from - 10 + 1
+        while (to <= from && from > 0)
+        {
+          axios
+          .get(`https://localhost:44314/Recipe/getRecipe/${from}`)
+          .then((data) => {
+            posts.push(data.data)
+          })
+          --from
+        }
+      })
+      console.log(posts)
+    }
+    if (posts.length) 
+    {
+      this.before = posts
+    }
+    else 
+    {
+      posts = this.before
+    }
+    let totalCount = post.totalCount
+
     return (
       <React.Fragment>
         {isLoading && <Loader />}
@@ -48,7 +98,10 @@ class Posts extends React.Component {
             <h2>Тут пока ничего нет</h2>
           </div>
         )}
-        {posts.map((p) => <Post post={p} key={p._id} TYPE={UPDATE_POSTS} />)}
+        {
+        posts.map((p) => { 
+        return <Post post={p} key={p.id} TYPE={UPDATE_POSTS} />})}
+        
         {!isLoading && totalCount > posts.length && (
           <Pagination
             activePage={this.state.activePage}

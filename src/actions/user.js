@@ -3,26 +3,26 @@ import axios from 'axios'
 import { GET_USER, USER_LOADING } from './types'
 
 export const getUserById = (id) => (dispatch) => {
-  console.log(id)
   let tok = localStorage.getItem('userData').replaceAll('\"', '')
-  console.log(`Bearer ${tok}`)
-  
+  let ret = "Bearer " + tok
+  console.log(ret)
+  console.log(id)
   dispatch(setUserLoading(true))
-  fetch(`https://localhost:44314/api/User/profile/${id}`, {
-    mode: 'no-cors',
-    method: 'GET',
-    token: localStorage.getItem('userData'),
+  axios
+  .get(`https://localhost:44314/api/User/profile/${id}`,  {
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${tok}`
-      }
-  })
-    .then((res) =>{
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET",
+    'Content-Type': 'application/json',
+    'Authorization': ret
+  }})
+    .then((res) => {
       console.log(res)
-     dispatch({
-      type: GET_USER,
-      payload: res
-    })})
+      dispatch({
+        type: GET_USER,
+        payload: res.data
+      })
+    })
     .catch(() => dispatch(setUserLoading(false)))
 }
 

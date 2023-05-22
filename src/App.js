@@ -22,29 +22,34 @@ import UserProfile from './components/user-profile/UserProifle'
 import Feed from './components/feed/Feed'
 import NotFound from './components/not-found/NotFound'
 import CreateRecipe from './components/shared/PostForm'
+
 import {checkLogin} from './actions/auth'
 
-function Func() {
-  const dispatch = useDispatch()
-  
-  useEffect(() => {
-    checkLogin(dispatch);
-  })
-  return dispatch
+
+if (localStorage.access_token) {
+  const { access_token } = localStorage
+  setAuthToken(access_token)
+  const decoded = jwtDecode(access_token)
+  store.dispatch(setCurrentUser(decoded))
+  const currentTime = Date.now() / 1000
+  if (decoded.exp < currentTime) {
+    store.dispatch(logout())
+    window.location.href = '/login'
+  }
 }
+
 
 function App() {
   return (
     <Provider store={store}>
-      <Func />
       <BrowserRouter>
         <React.Fragment>
           <Header />
           <div className="container">
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
-            <Route exact path="/" component={AllPosts} />
             <Route path="/post/:id" component={SinglePost} />
+            <Route exact path="/" component={AllPosts} />
             <Route path="/user/:id" component={UserProfile} />
             <Route path="/createRecipe" component={CreateRecipe}/>
             <Switch>

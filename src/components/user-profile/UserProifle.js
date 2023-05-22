@@ -13,8 +13,7 @@ import jwtDecode from 'jwt-decode'
 class UserProfile extends React.Component {
 
   componentDidMount() {
-    const decode = jwtDecode(localStorage.getItem('userData'))
-    this.props.getUserById(decode.nameid)
+    this.props.getUserById(this.props.auth.user.nameid)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,10 +31,6 @@ class UserProfile extends React.Component {
             <div className="row">
               <div className="col-8">
                 <h2 className="profile-username">{user.name}</h2>
-                <p>
-                  <strong>Зарегистрирован: </strong>
-                  {new Date(user.createdDate).toDateString()}
-                </p>
               </div>
             </div>
           </div>

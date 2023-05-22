@@ -36,25 +36,26 @@ function DeleteToken() {
 }
 
 export const login = (userData) => (dispatch) => {
-  console.log(userData)
   fetch('https://localhost:44314/api/User/login', {
     method: 'POST',
     body: JSON.stringify(userData),
     headers: {
       'Content-Type': 'application/json'
       }})
-      .then(response => response.json())
+      .then(response => response.text())      
       .then(token => {
-        SaveToken(token.token)
-        const decoded = jwtDecode(token.token)
+      localStorage.setItem('access_token', token)
+      setAuthToken(token)
+        const decoded = jwtDecode(token)
         console.log(decoded)
         dispatch(setCurrentUser(decoded))
       })
-      .catch(error => console.error('Unable to get item', error))
+      .catch(error => console.error('erorr   ', error))
 }
 
 export const logout = () => (dispatch) => {
-  DeleteToken()
+  localStorage.removeItem('access_token')
+  setAuthToken(false)
   dispatch(setCurrentUser({}))
 }
 

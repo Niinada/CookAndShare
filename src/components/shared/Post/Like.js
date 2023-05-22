@@ -8,7 +8,9 @@ class Like extends React.Component {
 
   onLikeClick = (e) => {
     e.preventDefault()
+    console.log(this.props)
     const { auth, postId, likes, TYPE } = this.props
+
     if (auth.isAuthenticated) {
       const existedLike = likes.find((l) => l.user === auth.user.id)
       if (existedLike) {
@@ -20,13 +22,13 @@ class Like extends React.Component {
   }
 
   render() {
-    const { likes } = this.props
+    const  likes = this.props.likes === null ? 0 : this.props.likes
     return (
       <a
         href="#" role="button"
         className="card-link" onClick={this.onLikeClick}
       >
-        <i className="fa fa-heart"></i> {likes.length}
+        <i className="fa fa-heart"></i> {likes}
       </a>
     )
   }

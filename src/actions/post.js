@@ -9,36 +9,68 @@ import {
   CLEAR_POSTS,
   UPDATE_POST
 } from './types'
+import { data } from 'jquery'
 
-export const create = (post) => (dispatch) => {
-  console.log(post)
+export const create = (post) => async (dispatch) => {
   let tok = localStorage.getItem('userData').replaceAll('\"', '')
-  console.log(`Bearer ${tok}`)
-    fetch('https://localhost:44314/Recipe', {
-      mode: 'no-cors',
-      method: 'POST',
+  
+  let ret = "Bearer " + tok // Возвращаемый токен 
+    await axios.post('https://localhost:44314/Recipe', post, {
       headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${tok}`
-        },
-      body: post
-    }).then((res) => {
-      console.log(res)
+        'Authorization': ret
+      }
+    })
+    .then((res) => {
+     if (res.ok === true)
+     {
+      const data = res.json()
+     }
     })
 }
 
-export const getAll = (params) => (dispatch) => {
+export const getAll = (params) => async (dispatch) => {
+  dispatch(setPostLoading(true))
+  let tok = localStorage.getItem('userData').replaceAll('\"', '')
+  let dataArr = []
+  await axios
+  .get('https://localhost:44314/Recipe')
+  .then((res) => { 
+    const count = res.data.$values.length
+    let from = count - params.skip
+    const to = from - params.limit + 1
+    while (to <= from && from > 0)
+    {
+      axios
+      .get(`https://localhost:44314/Recipe/getRecipe/${from}`)
+      .then((data) => {
+        dataArr.push(data.data)
+      })
+      --from
+    }
 
+    dispatch({
+      type: GET_POST, 
+      payload: {
+        posts: dataArr, 
+        totalCount: count
+      }
+  })
+  })
 }
 
 export const getById = (id) => (dispatch) => {
   dispatch(setPostLoading(true))
   axios
-    .get(`/api/posts/${id}`)
-    .then((res) => dispatch({
+    .get(`https://localhost:44314/Recipe/getRecipe/${id}`)
+    .then((res) => {
+      console.log('res', res.data)
+      dispatch({
       type: GET_POST,
       payload: res.data
-    }))
+    })})
     .catch(() => dispatch(setPostLoading(false)))
 }
 
@@ -53,7 +85,7 @@ export const remove = (id) => (dispatch) => {
 
 export const createLike = (postId, TYPE) => (dispatch) => {
   axios
-    .post(`/api/posts/${postId}/likes`)
+    .post(`https://localhost:44314/Recipe/LikeRecipe/${postId}`)
     .then((res) => dispatch({
       type: TYPE,
       payload: res.data
